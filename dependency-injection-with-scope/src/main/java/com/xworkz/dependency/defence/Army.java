@@ -1,0 +1,15 @@
+package com.xworkz.dependency.defence;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Data
+@Scope("prototype")
+public class Army {
+    private int id;
+    private String armyName;
+
+
+}
