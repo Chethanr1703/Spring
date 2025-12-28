@@ -207,10 +207,10 @@ pageEncoding="UTF-8"%>
                     </div>
                 </div>
 
-                <!-- ================= BUTTONS ================= -->
+
                 <div class="text-center">
                     <button type="submit" class="btn btn-success px-5">Update Profile</button>
-                    <button type="reset" class="btn btn-secondary px-5">Reset</button>
+
                 </div>
 
             </form>

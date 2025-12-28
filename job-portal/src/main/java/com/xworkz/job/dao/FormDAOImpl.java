@@ -122,39 +122,48 @@ public class FormDAOImpl implements FormDAO{
     @Override
     public boolean updateApplicationForm(ApplicationFormDTO applicationFormDTO) {
         Class.forName("com.mysql.cj.jdbc.Driver");
+        String updateProfile =
+                "UPDATE jobApplication SET firstName=?, lastName=?, phoneNo=?, dob=?, gender=?, " +
+                        "currentLocation=?, qualification=?, specialization=?, collegeName=?, yearOfPassing=?, " +
+                        "cgpa=?, experience=?, currentCompany=?, currentRole=?, skills=?, currentSalary=?, " +
+                        "technicalSummary=? WHERE email=?";
 
-        String updateProfile = "Update jobApplication set firstName=?, lastName=?,email=?,phoneNo=?,dob=?,gender=?,currentLocation=?,qualification=?,specialization=?,collegeName=?,yearOfPassing=?,cgpa=?,experience=?,currentCompany=?,currentRole=?,skills=?,currentSalary=?,technicalSummary=?";
-        try (Connection connection = DriverManager.getConnection(DBConstant.URL.getProperties(), DBConstant.USERNAME.getProperties(), DBConstant.PASSWORD.getProperties());
+        try (Connection connection = DriverManager.getConnection(
+                DBConstant.URL.getProperties(),
+                DBConstant.USERNAME.getProperties(),
+                DBConstant.PASSWORD.getProperties());
+
              PreparedStatement preparedStatement = connection.prepareStatement(updateProfile)) {
 
             preparedStatement.setString(1, applicationFormDTO.getFirstName());
             preparedStatement.setString(2, applicationFormDTO.getLastName());
-            preparedStatement.setString(3, applicationFormDTO.getEmail());
-            preparedStatement.setLong(4, applicationFormDTO.getPhoneNo());
-            preparedStatement.setString(5, applicationFormDTO.getDob());
-            preparedStatement.setString(6, applicationFormDTO.getGender());
-            preparedStatement.setString(7, applicationFormDTO.getCurrentLocation());
-            preparedStatement.setString(8, applicationFormDTO.getQualification());
-            preparedStatement.setString(9, applicationFormDTO.getSpecialization());
-            preparedStatement.setString(10, applicationFormDTO.getCollegeName());
-            preparedStatement.setString(11, applicationFormDTO.getYearOfPassing());
-            preparedStatement.setString(12, applicationFormDTO.getCgpa());
-            preparedStatement.setString(13, applicationFormDTO.getExperience());
-            preparedStatement.setString(14, applicationFormDTO.getCurrentCompany());
-            preparedStatement.setString(15, applicationFormDTO.getCurrentRole());
-            preparedStatement.setString(17, applicationFormDTO.getCurrentSalary());
-            preparedStatement.setString(16, applicationFormDTO.getSkills());
-            preparedStatement.setString(18, applicationFormDTO.getTechnicalSummary());
-
-
+            preparedStatement.setLong(3, applicationFormDTO.getPhoneNo());
+            preparedStatement.setString(4, applicationFormDTO.getDob());
+            preparedStatement.setString(5, applicationFormDTO.getGender());
+            preparedStatement.setString(6, applicationFormDTO.getCurrentLocation());
+            preparedStatement.setString(7, applicationFormDTO.getQualification());
+            preparedStatement.setString(8, applicationFormDTO.getSpecialization());
+            preparedStatement.setString(9, applicationFormDTO.getCollegeName());
+            preparedStatement.setString(10, applicationFormDTO.getYearOfPassing());
+            preparedStatement.setString(11, applicationFormDTO.getCgpa());
+            preparedStatement.setString(12, applicationFormDTO.getExperience());
+            preparedStatement.setString(13, applicationFormDTO.getCurrentCompany());
+            preparedStatement.setString(14, applicationFormDTO.getCurrentRole());
+            preparedStatement.setString(15, applicationFormDTO.getSkills());
+            preparedStatement.setString(16, applicationFormDTO.getCurrentSalary());
+            preparedStatement.setString(17, applicationFormDTO.getTechnicalSummary());
+            preparedStatement.setString(18, applicationFormDTO.getEmail()); // WHERE email = ?
             int rowEffected = preparedStatement.executeUpdate();
 
+            System.out.println(rowEffected);
+            System.out.println("EMAIL USED IN WHERE: " + applicationFormDTO.getEmail());
             if (rowEffected < 0) {
                 return false;
             } else return true;
 
         }
     }
+
 @SneakyThrows
     @Override
     public boolean deleteForm(String email) {

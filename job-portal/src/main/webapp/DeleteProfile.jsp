@@ -30,7 +30,7 @@ pageEncoding="UTF-8"%>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
     <div class="container">
         <a class="navbar-brand" href="index.jsp">JobPortal</a>

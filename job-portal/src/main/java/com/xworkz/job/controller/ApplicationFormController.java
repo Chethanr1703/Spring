@@ -57,7 +57,7 @@ public class ApplicationFormController {
         }
     }
 
-    @GetMapping("deleteProfile/{email:.+}")
+    @GetMapping("deleteProfile/{email:}")
     public String getApplicationForDelete(@PathVariable String email) {
         boolean isDelete = formService.isDelete(email);
         if (isDelete) {
