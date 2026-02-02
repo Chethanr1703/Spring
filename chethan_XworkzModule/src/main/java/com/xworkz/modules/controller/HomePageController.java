@@ -67,8 +67,6 @@ public class HomePageController {
             model.addAttribute("noTeams","No Teams Found");
             return "Home";
         }
-
-
     }
 
 
