@@ -324,4 +324,12 @@ public class ModuleServiceImpl implements ModuleService {
 
         return null;
     }
+
+    @Override
+    public SignupDTO checkEmail(String email) {
+        if(email!=null){
+
+        }
+        return null;
+    }
 }

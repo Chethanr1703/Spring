@@ -7,6 +7,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 <head>
     <meta charset="UTF-8">
     <title>Sign Up | X-Workz</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -77,7 +78,6 @@ pageEncoding="UTF-8" isELIgnored="false" %>
         <form action="signUp" method="post" enctype="multipart/form-data">
 
 
-
             <div class="mb-3">
                 <label class="form-label">Full Name</label>
                 <input type="text" id="name" name="name" class="form-control" value="${dto.name}"
@@ -92,7 +92,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control"  value="${dto.email}"
+                <input type="email" id="email" name="email" class="form-control" value="${dto.email}"
                        oninput="validateEmail()" onchange="validateEmail()">
                 <div class="text-danger small" id="emailError"></div>
                 <div class="text-danger small">${emailError}</div>
@@ -103,7 +103,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
             <div class="mb-3">
                 <label class="form-label">Phone</label>
                 <input type="number" id="phone" name="phone" class="form-control" maxlength="10" value="${dto.phone}"
-                       oninput="validatePhone()" onchange="validatePhone()">
+                       onchange="validatePhoneNumber()">
                 <div class="text-danger small" id="phoneError"></div>
                 <div class="text-danger small">${phoneError}</div>
 
@@ -112,7 +112,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 
             <div class="mb-3">
                 <label class="form-label">Age</label>
-                <input type="number" id="age" name="age" class="form-control"  value="${dto.age}"
+                <input type="number" id="age" name="age" class="form-control" value="${dto.age}"
                        oninput="validateAge()" onchange="validateAge()">
                 <div class="text-danger small" id="ageError"></div>
             </div>
@@ -207,151 +207,185 @@ pageEncoding="UTF-8" isELIgnored="false" %>
     </div>
 </main>
 <script>
-    function allowOnlyLetters(event) {
-        const char = event.key;
-        return /^[A-Za-z ]$/.test(char);
+
+function validatePhoneNumber() {
+    console.log("start");
+
+    const phone = document.getElementById("phone").value.trim();
+    const phoneError = document.getElementById("phoneError");
+
+
+    if (!/^[6-9][0-9]{9}$/.test(phone)) {
+        phoneError.textContent =
+            "Phone number must start with 6–9 and contain 10 digits";
+        phoneError.classList.remove("text-success");
+        phoneError.classList.add("text-danger");
+        return false;
     }
 
-    function validateName() {
-        const nameInput = document.getElementById("name");
-        const nameError = document.getElementById("nameError");
 
-        const v = nameInput.value.trim();
-        const nameRegex = /^[A-Za-z ]{3,50}$/;
+    phoneError.textContent = "";
 
-        if (v === "") {
-            nameError.textContent = "Name is required";
-            return false;
-        }
+    const phoneCheck =
+        "http://localhost:8080/chethan_XworkzModule/checkPhoneNumber?phone=";
 
-        if (!nameRegex.test(v)) {
-            nameError.textContent =
-                "Enter a valid name (3–50 alphabets only, no numbers)";
-            return false;
-        }
 
-        nameError.textContent = "";
-        return true;
+    fetch(phoneCheck + phone)
+        .then(res => res.text())
+        .then(data => {
+            console.log(data); // backend message
+            phoneError.textContent = data;
+
+            // Optional: color based on response
+            if (data.includes("Valid")) {
+                phoneError.classList.remove("text-danger");
+                phoneError.classList.add("text-success");
+            } else {
+                phoneError.classList.remove("text-success");
+                phoneError.classList.add("text-danger");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            phoneError.textContent = "Unable to validate phone number";
+            phoneError.classList.add("text-danger");
+        });
+
+    return true;
+}
+
+
+
+function allowOnlyLetters(event) {
+    const char = event.key;
+    return /^[A-Za-z ]$/.test(char);
+}
+
+function validateName() {
+    const nameInput = document.getElementById("name");
+    const nameError = document.getElementById("nameError");
+
+    const v = nameInput.value.trim();
+    const nameRegex = /^[A-Za-z ]{3,50}$/;
+
+    if (v === "") {
+        nameError.textContent = "Name is required";
+        return false;
     }
 
-    /* ================= EMAIL ================= */
-    function validateEmail() {
-        const email = document.getElementById("email").value.trim();
-        const emailError = document.getElementById("emailError");
-
-        if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
-            emailError.textContent = "Email must end with @gmail.com";
-            return false;
-        }
-
-        emailError.textContent = "";
-        return true;
+    if (!nameRegex.test(v)) {
+        nameError.textContent =
+            "Enter a valid name (3–50 alphabets only, no numbers)";
+        return false;
     }
 
-    /* ================= PHONE ================= */
-    function validatePhone() {
-        const phone = document.getElementById("phone").value.trim();
-        const phoneError = document.getElementById("phoneError");
+    nameError.textContent = "";
+    return true;
+}
 
-        if (!/^[6-9][0-9]{9}$/.test(phone)) {
-            phoneError.textContent =
-                "Phone number must start with 6–9 and contain 10 digits";
-            return false;
-        }
+/* ================= EMAIL ================= */
+function validateEmail() {
+    const email = document.getElementById("email").value.trim();
+    const emailError = document.getElementById("emailError");
 
-        phoneError.textContent = "";
-        return true;
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+        emailError.textContent = "Email must end with @gmail.com";
+        return false;
     }
 
-    /* ================= AGE ================= */
-    function validateAge() {
-        const age = document.getElementById("age").value;
-        const ageError = document.getElementById("ageError");
+    emailError.textContent = "";
+    return true;
+}
 
-        if (age < 18 || age > 60) {
-            ageError.textContent = "Age must be between 18 and 60";
-            return false;
-        }
+/* ================= AGE ================= */
+function validateAge() {
+    const age = document.getElementById("age").value;
+    const ageError = document.getElementById("ageError");
 
-        ageError.textContent = "";
-        return true;
+    if (age < 18 || age > 60) {
+        ageError.textContent = "Age must be between 18 and 60";
+        return false;
     }
 
-    /* ================= GENDER ================= */
-    function validateGender() {
-        const genderError = document.getElementById("genderError");
-        const gender = document.querySelector('input[name="gender"]:checked');
+    ageError.textContent = "";
+    return true;
+}
 
-        if (!gender) {
-            genderError.textContent = "Please select gender";
-            return false;
-        }
+/* ================= GENDER ================= */
+function validateGender() {
+    const genderError = document.getElementById("genderError");
+    const gender = document.querySelector('input[name="gender"]:checked');
 
-        genderError.textContent = "";
-        return true;
+    if (!gender) {
+        genderError.textContent = "Please select gender";
+        return false;
     }
 
-    /* ================= ADDRESS ================= */
-    function validateAddress() {
-        const address = document.getElementById("address").value.trim();
-        const addressError = document.getElementById("addressError");
+    genderError.textContent = "";
+    return true;
+}
 
-        if (address.length < 10) {
-            addressError.textContent =
-                "Address must contain at least 10 characters";
-            return false;
-        }
+/* ================= ADDRESS ================= */
+function validateAddress() {
+    const address = document.getElementById("address").value.trim();
+    const addressError = document.getElementById("addressError");
 
-        addressError.textContent = "";
-        return true;
+    if (address.length < 10) {
+        addressError.textContent =
+            "Address must contain at least 10 characters";
+        return false;
     }
 
-    /* ================= PASSWORD ================= */
-    function validatePassword() {
-        const password = document.getElementById("password").value;
-        const passwordError = document.getElementById("passwordError");
+    addressError.textContent = "";
+    return true;
+}
 
-        const regex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+/* ================= PASSWORD ================= */
+function validatePassword() {
+    const password = document.getElementById("password").value;
+    const passwordError = document.getElementById("passwordError");
 
-        if (!regex.test(password)) {
-            passwordError.textContent =
-                "Password must have uppercase, lowercase, number & special character";
-            return false;
-        }
+    const regex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
-        passwordError.textContent = "";
-        return true;
+    if (!regex.test(password)) {
+        passwordError.textContent =
+            "Password must have uppercase, lowercase, number & special character";
+        return false;
     }
 
-    /* ================= CONFIRM PASSWORD ================= */
-    function validateConfirmPassword() {
-        const password = document.getElementById("password").value;
-        const confirmPassword =
-            document.getElementById("confirmPassword").value;
-        const confirmPasswordError =
-            document.getElementById("confirmPasswordError");
+    passwordError.textContent = "";
+    return true;
+}
 
-        if (password !== confirmPassword) {
-            confirmPasswordError.textContent = "Passwords do not match";
-            return false;
-        }
+/* ================= CONFIRM PASSWORD ================= */
+function validateConfirmPassword() {
+    const password = document.getElementById("password").value;
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+    const confirmPasswordError =
+        document.getElementById("confirmPasswordError");
 
-        confirmPasswordError.textContent = "";
-        return true;
+    if (password !== confirmPassword) {
+        confirmPasswordError.textContent = "Passwords do not match";
+        return false;
     }
 
-    /* ================= FORM SUBMIT ================= */
-    function validateForm() {
-        return validateName() &
-               validateEmail() &
-               validatePhone() &
-               validateAge() &
-               validateGender() &
-               validateAddress() &
-               validatePassword() &
-               validateConfirmPassword();
-    }
+    confirmPasswordError.textContent = "";
+    return true;
+}
+
+/* ================= FORM SUBMIT ================= */
+function validateForm() {
+    return validateName() &
+           validateEmail() &
+           validatePhoneNumber() &
+           validateAge() &
+           validateGender() &
+           validateAddress() &
+           validatePassword() &
+           validateConfirmPassword();
+}
 
 
 <!--    function validateImage() {-->
@@ -378,7 +412,6 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 <!--    error.textContent = "";-->
 <!--    return true;-->
 <!--}-->
-
 
 
 </script>

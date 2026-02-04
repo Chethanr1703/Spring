@@ -46,52 +46,52 @@ public class ModuleController {
     @PostMapping("/signUp")
     public ModelAndView createAccount(@Valid SignupDTO signupDTO, BindingResult bindingResult, ModelAndView mv) {
 
-
-        mv.addObject("dto", signupDTO);
-
-
-        if (bindingResult.hasErrors()) {
-            if (bindingResult.hasFieldErrors("name")) {
-                mv.addObject("nameError",
-                        bindingResult.getFieldError("name").getDefaultMessage());
-            }
-            if (bindingResult.hasFieldErrors("email")) {
-                mv.addObject("emailError",
-                        bindingResult.getFieldError("email").getDefaultMessage());
-            }
-            if (bindingResult.hasFieldErrors("phone")) {
-                mv.addObject("phoneError",
-                        bindingResult.getFieldError("phone").getDefaultMessage());
-            }
-            if (bindingResult.hasFieldErrors("age")) {
-                mv.addObject("ageError",
-                        bindingResult.getFieldError("age").getDefaultMessage());
-            }
-            if (bindingResult.hasFieldErrors("gender")) {
-                mv.addObject("genderError",
-                        bindingResult.getFieldError("gender").getDefaultMessage());
-            }
-            if (bindingResult.hasFieldErrors("address")) {
-                mv.addObject("addressError",
-                        bindingResult.getFieldError("address").getDefaultMessage());
-            }
-            if (bindingResult.hasFieldErrors("password")) {
-                mv.addObject("passwordError",
-                        bindingResult.getFieldError("password").getDefaultMessage());
-            }
-            if (bindingResult.hasFieldErrors("confirmPassword")) {
-                mv.addObject("confirmPasswordError",
-                        bindingResult.getFieldError("confirmPassword").getDefaultMessage());
-            }
-            return mv;
-        }
-
-
-        if (!signupDTO.getPassword().equals(signupDTO.getConfirmPassword())) {
-            mv.addObject("confirmPasswordError", "Passwords do not match");
-            return mv;
-        }
-
+//
+//        mv.addObject("dto", signupDTO);
+//
+//
+//        if (bindingResult.hasErrors()) {
+//            if (bindingResult.hasFieldErrors("name")) {
+//                mv.addObject("nameError",
+//                        bindingResult.getFieldError("name").getDefaultMessage());
+//            }
+//            if (bindingResult.hasFieldErrors("email")) {
+//                mv.addObject("emailError",
+//                        bindingResult.getFieldError("email").getDefaultMessage());
+//            }
+//            if (bindingResult.hasFieldErrors("phone")) {
+//                mv.addObject("phoneError",
+//                        bindingResult.getFieldError("phone").getDefaultMessage());
+//            }
+//            if (bindingResult.hasFieldErrors("age")) {
+//                mv.addObject("ageError",
+//                        bindingResult.getFieldError("age").getDefaultMessage());
+//            }
+//            if (bindingResult.hasFieldErrors("gender")) {
+//                mv.addObject("genderError",
+//                        bindingResult.getFieldError("gender").getDefaultMessage());
+//            }
+//            if (bindingResult.hasFieldErrors("address")) {
+//                mv.addObject("addressError",
+//                        bindingResult.getFieldError("address").getDefaultMessage());
+//            }
+//            if (bindingResult.hasFieldErrors("password")) {
+//                mv.addObject("passwordError",
+//                        bindingResult.getFieldError("password").getDefaultMessage());
+//            }
+//            if (bindingResult.hasFieldErrors("confirmPassword")) {
+//                mv.addObject("confirmPasswordError",
+//                        bindingResult.getFieldError("confirmPassword").getDefaultMessage());
+//            }
+//            return mv;
+//        }
+//
+//
+//        if (!signupDTO.getPassword().equals(signupDTO.getConfirmPassword())) {
+//            mv.addObject("confirmPasswordError", "Passwords do not match");
+//            return mv;
+//        }
+//
 
         boolean saved = moduleService.validateAndSave(signupDTO);
 

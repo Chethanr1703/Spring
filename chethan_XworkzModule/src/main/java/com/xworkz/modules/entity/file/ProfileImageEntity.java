@@ -45,5 +45,4 @@ public class ProfileImageEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // getters & setters
 }

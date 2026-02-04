@@ -31,7 +31,15 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 <body class="bg-light">
 
 <!-- NAVBAR -->
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow fixed-top px-4">
+    <button class="btn btn-primary me-3"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#dashboardOffcanvas">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
     <a class="navbar-brand d-flex align-items-center" href="<c:url value='/'/>">
         <img src="https://x-workz.com/Logo.png" class="logo-img me-2" alt="X-Workz">
         Chethan_Xworkz
@@ -43,9 +51,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-
-        <!-- LEFT MENU -->
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto">
             <li class="nav-item">
                 <a class="nav-link active fw-semibold" href="<c:url value='/home'/>">Home</a>
             </li>
@@ -53,6 +59,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 <a class="nav-link fw-semibold" href="#">Courses</a>
             </li>
         </ul>
+
         <div class="ms-auto d-flex gap-2">
             <button class="btn btn-light rounded-pill"
                     data-bs-toggle="modal"
@@ -64,8 +71,6 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 Logout
             </a>
         </div>
-
-
     </div>
 </nav>
 
@@ -73,46 +78,54 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 
 <main style="padding-top: 90px;">
 
-    <div class="container">
-        <div class="row justify-content-center">
-
-            <div class="col-md-6 col-lg-5">
-
-                <div class="card shadow-lg p-4 text-center">
-                    <h3 class="fw-bold text-primary mb-4">
-                        Welcome to X-Workz
-                    </h3>
-
-                    <div class="d-grid gap-3">
-
-                        <a href="addTeam"
-                           class="btn btn-outline-primary rounded-pill fw-semibold py-2">
-                            Add Team
-                        </a>
-
-                        <a href="addTeamMember"
-                           class="btn btn-outline-primary rounded-pill fw-semibold py-2">
-                            Add Team Member
-                        </a>
-
-                        <a href="viewTeamMembers"
-                           class="btn btn-outline-primary rounded-pill fw-semibold py-2">
-                            View Team Members
-                        </a>
-
-                        <a href="viewTeams"
-                           class="btn btn-outline-primary rounded-pill fw-semibold py-2">
-                            View Teams
-                        </a>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 </main>
+
+
+
+
+<div class="offcanvas offcanvas-start text-bg-primary"
+     tabindex="-1"
+     id="dashboardOffcanvas">
+
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title fw-bold">Dashboard</h5>
+        <button type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body p-0">
+        <div class="nav nav-pills flex-column gap-2 p-3">
+
+            <a href="addTeam"
+               class="nav-link text-white fw-semibold">
+                Add Team
+            </a>
+
+            <a href="addTeamMember"
+               class="nav-link text-white fw-semibold">
+                Add Team Member
+            </a>
+
+            <a href="viewTeamMembers"
+               class="nav-link text-white fw-semibold">
+                View Team Members
+            </a>
+
+            <a href="viewTeams"
+               class="nav-link text-white fw-semibold">
+                View Teams
+            </a>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 <div class="modal fade" id="profileModal">
     <div class="modal-dialog modal-dialog-centered">
