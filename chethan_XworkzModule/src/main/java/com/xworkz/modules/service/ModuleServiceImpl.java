@@ -1,13 +1,14 @@
 package com.xworkz.modules.service;
 
 import com.xworkz.modules.dao.ModuleDAO;
+import com.xworkz.modules.dao.fileDAO.FileDAO;
 import com.xworkz.modules.dto.AddTeamDTO;
 import com.xworkz.modules.dto.AddTeamMemberDTO;
 import com.xworkz.modules.dto.SignupDTO;
 import com.xworkz.modules.entity.AddTeamEntity;
 import com.xworkz.modules.entity.AddTeamMemberEntity;
 import com.xworkz.modules.entity.SignupEntity;
-import com.xworkz.modules.entity.file.ProfileImageEntity;
+import com.xworkz.modules.entity.file.FileEntity;
 import com.xworkz.modules.exception.UserNotFounException;
 import com.xworkz.modules.utils.OTP;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,6 +35,8 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Autowired
     OTP otp;
+    @Autowired
+    FileDAO fileDAO;
 
     private static final String SECRET = "xworkzSecretKey1";
 
@@ -67,7 +71,7 @@ public class ModuleServiceImpl implements ModuleService {
 
 
     @Override
-    public boolean validateAndSave(SignupDTO signupDTO) {
+    public boolean validateAndSave(SignupDTO signupDTO) throws IOException {
         boolean isValid = true;
         if (signupDTO == null) {
             isValid = false;
@@ -130,10 +134,46 @@ public class ModuleServiceImpl implements ModuleService {
             if (isAvailable) {
                 return false;
             } else {
-                return moduleDAO.save(signupEntity);
+
+                BeanUtils.copyProperties(signupDTO, signupEntity);
+                MultipartFile image = signupDTO.getImage();
+
+                if (image != null && !image.isEmpty()) {
+
+                    String uploadDir = "D:/filefolder";   // folder only
+                    String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+
+                    // 1️⃣ Create directory path
+                    Path directoryPath = Paths.get(uploadDir);
+
+                    // 2️⃣ Create directory if not exists
+                    if (!Files.exists(directoryPath)) {
+                        Files.createDirectories(directoryPath);
+                    }
+
+                    // 3️⃣ Create full file path
+                    Path filePath = directoryPath.resolve(fileName);
+
+                    // 4️⃣ Write file
+                    Files.write(filePath, image.getBytes());
+
+                    // 5️⃣ Save file metadata
+                    FileEntity fileEntity = new FileEntity();
+                    fileEntity.setOriginalFileName(image.getOriginalFilename());
+                    fileEntity.setStoredFilePath(filePath.toString());
+                    fileEntity.setFileSize(image.getSize());
+                    fileEntity.setContentType(image.getContentType());
+
+                    int imageId = fileDAO.saveFile(fileEntity);
+                    fileEntity.setId(imageId);
+
+                    signupEntity.setProfileImage(fileEntity);
+                }
+
+
+                isValid = moduleDAO.save(signupEntity);
             }
         }
-
         return isValid;
     }
 

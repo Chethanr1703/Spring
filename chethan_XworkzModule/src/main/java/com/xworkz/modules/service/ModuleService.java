@@ -5,11 +5,12 @@ import com.xworkz.modules.dto.AddTeamMemberDTO;
 import com.xworkz.modules.dto.SignupDTO;
 import com.xworkz.modules.exception.UserNotFounException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ModuleService {
 
-    boolean validateAndSave(SignupDTO signupDTO);
+    boolean validateAndSave(SignupDTO signupDTO) throws IOException;
 
     SignupDTO validateLogin(String email, String password) throws UserNotFounException;
 

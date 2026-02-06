@@ -1,8 +1,11 @@
 package com.xworkz.modules.controller;
 
 import com.xworkz.modules.dto.SignupDTO;
+import com.xworkz.modules.entity.SignupEntity;
+import com.xworkz.modules.entity.file.FileEntity;
 import com.xworkz.modules.exception.UserNotFounException;
 import com.xworkz.modules.service.ModuleService;
+import com.xworkz.modules.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/")
@@ -23,6 +27,9 @@ public class ModuleController {
 
     @Autowired
     ModuleService moduleService;
+
+    @Autowired
+    FileService fileService;
 
 
     @GetMapping("signUp")
@@ -44,7 +51,7 @@ public class ModuleController {
 
 
     @PostMapping("/signUp")
-    public ModelAndView createAccount(@Valid SignupDTO signupDTO, BindingResult bindingResult, ModelAndView mv) {
+    public ModelAndView createAccount(@Valid SignupDTO signupDTO, BindingResult bindingResult, ModelAndView mv) throws IOException {
 
 //
 //        mv.addObject("dto", signupDTO);
@@ -107,12 +114,22 @@ public class ModuleController {
 
     @PostMapping("/login")
     public String getSignIn(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) throws UserNotFounException {
-        boolean valid = true;
         SignupDTO signupDTO = moduleService.validateLogin(email, password);
 
-        if (valid) {
+        if (signupDTO!=null) {
             moduleService.setCountToZero(email);
             session.setAttribute("user", signupDTO);
+
+
+            SignupEntity userEntity =
+                    fileService.getUserEntityByEmail(email);
+
+            if (userEntity.getProfileImage() != null) {
+                session.setAttribute(
+                        "fileId",
+                        userEntity.getProfileImage().getId()
+                );
+            }
             return "Home";
         } else {
             int count = moduleService.getCount(email);

@@ -1,6 +1,6 @@
 package com.xworkz.modules.entity;
 
-import com.xworkz.modules.entity.file.ProfileImageEntity;
+import com.xworkz.modules.entity.file.FileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +32,6 @@ public class SignupEntity {
 
     @OneToOne
     @JoinColumn(name = "file_id")
-    private ProfileImageEntity profileImage;
+    private FileEntity profileImage;
 
 }

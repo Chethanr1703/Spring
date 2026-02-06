@@ -4,7 +4,7 @@ import com.xworkz.modules.dto.AddTeamDTO;
 import com.xworkz.modules.entity.AddTeamEntity;
 import com.xworkz.modules.entity.AddTeamMemberEntity;
 import com.xworkz.modules.entity.SignupEntity;
-import com.xworkz.modules.entity.file.ProfileImageEntity;
+import com.xworkz.modules.entity.file.FileEntity;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -41,7 +41,5 @@ public interface ModuleDAO {
 
     List<AddTeamMemberEntity> getTeamMemberByTeamName(String teamName);
 
-    boolean saveProfileImage(ProfileImageEntity imageEntity);
-
- void    updateUserProfileImage(@NotNull(message =" Email is required") @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$",message = "email is not valid") String email, ProfileImageEntity imageEntity);
+    boolean saveProfileImage(FileEntity imageEntity);
 }

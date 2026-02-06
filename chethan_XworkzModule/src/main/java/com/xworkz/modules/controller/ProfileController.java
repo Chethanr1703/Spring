@@ -80,7 +80,7 @@ public class ProfileController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/signin";
+        return "redirect:/signIn";
     }
 
 }

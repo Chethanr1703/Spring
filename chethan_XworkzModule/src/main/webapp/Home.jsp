@@ -4,7 +4,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<html lang="en">
+<html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform">
 <head>
     <meta charset="UTF-8">
     <title>X-Workz | Home</title>
@@ -61,11 +61,27 @@ pageEncoding="UTF-8" isELIgnored="false" %>
         </ul>
 
         <div class="ms-auto d-flex gap-2">
-            <button class="btn btn-light rounded-pill"
+            <button class="btn p-0 border-0 bg-transparent"
                     data-bs-toggle="modal"
-                    data-bs-target="#profileModal">
-                Profile
+                    data-bs-target="#profileModal"
+                    title="Profile">
+
+                <c:choose>
+                    <c:when test="${not empty sessionScope.fileId}">
+                        <img src="<c:url value='/getImage?id=${sessionScope.fileId}'/>"
+                             class="rounded-circle border border-2 border-light"
+                             width="40" height="40"
+                             style="object-fit: cover;">
+                    </c:when>
+                    <c:otherwise>
+                        <img src="https://ui-avatars.com/api/?name=${sessionScope.user.name}&size=40"
+                             class="rounded-circle border border-2 border-light"
+                             width="40" height="40">
+                    </c:otherwise>
+                </c:choose>
+
             </button>
+
 
             <a href="logout" class="btn btn-outline-light rounded-pill">
                 Logout
@@ -75,11 +91,17 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 </nav>
 
 
-
 <main style="padding-top: 90px;">
-
-
+    <div class="container mt-5 text-center">
+        <h3 class="fw-bold">
+            Hello <span class="text-primary">${sessionScope.user.name}</span>
+        </h3>
+        <p class="text-muted fs-5">
+            Welcome to <b>X-Workz Training Institute</b>
+        </p>
+    </div>
 </main>
+
 
 
 
@@ -126,41 +148,88 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 
 
 
-
 <div class="modal fade" id="profileModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title">Profile</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
+            <!-- HEADER WITH PROFILE IMAGE -->
+            <div class="modal-header border-0 justify-content-center pb-0">
+                <div class="text-center">
+
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.fileId}">
+                            <img src="<c:url value='/getImage?id=${sessionScope.fileId}'/>"
+                                 class="rounded-circle shadow"
+                                 width="110" height="110"
+                                 style="object-fit: cover;">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="https://ui-avatars.com/api/?name=${sessionScope.user.name}&size=110"
+                                 class="rounded-circle shadow"
+                                 width="110" height="110">
+                        </c:otherwise>
+                    </c:choose>
+
+                </div>
+
+                <button class="btn-close position-absolute end-0 me-3"
+                        data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
-                <p><b>Name:</b> ${sessionScope.user.name}</p>
-                <p><b>Email:</b> ${sessionScope.user.email}</p>
-                <p><b>Phone:</b> ${sessionScope.user.phone}</p>
-                <p><b>Age:</b> ${sessionScope.user.age}</p>
-                <p><b>Address:</b> ${sessionScope.user.address}</p>
+            <!-- BODY -->
+            <div class="modal-body text-center pt-3">
 
-                <button class="btn btn-primary w-100 mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editProfileModal"
-                        data-bs-dismiss="modal">
-                    Edit Profile
-                </button>
+                <h5 class="fw-bold mb-1">
+                    ${sessionScope.user.name}
+                </h5>
+                <p class="text-muted mb-3">
+                    ${sessionScope.user.email}
+                </p>
 
-                <button class="btn btn-secondary w-100"
-                        data-bs-toggle="modal"
-                        data-bs-target="#changePasswordModal"
-                        data-bs-dismiss="modal">
-                    Change Password
-                </button>
+                <!-- INFO LIST -->
+                <div class="text-start px-3">
+
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <span class="text-muted">Phone</span>
+                        <span class="fw-semibold">${sessionScope.user.phone}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <span class="text-muted">Age</span>
+                        <span class="fw-semibold">${sessionScope.user.age}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between py-2">
+                        <span class="text-muted">Address</span>
+                        <span class="fw-semibold text-end"
+                              style="max-width: 60%;">
+                            ${sessionScope.user.address}
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="mt-4">
+                    <button class="btn btn-primary w-100 mb-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editProfileModal"
+                            data-bs-dismiss="modal">
+                        Edit Profile
+                    </button>
+
+                    <button class="btn btn-outline-secondary w-100"
+                            data-bs-toggle="modal"
+                            data-bs-target="#changePasswordModal"
+                            data-bs-dismiss="modal">
+                        Change Password
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="editProfileModal">
     <div class="modal-dialog modal-dialog-centered">

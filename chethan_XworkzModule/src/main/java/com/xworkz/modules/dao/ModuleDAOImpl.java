@@ -3,7 +3,7 @@ package com.xworkz.modules.dao;
 import com.xworkz.modules.entity.AddTeamEntity;
 import com.xworkz.modules.entity.AddTeamMemberEntity;
 import com.xworkz.modules.entity.SignupEntity;
-import com.xworkz.modules.entity.file.ProfileImageEntity;
+import com.xworkz.modules.entity.file.FileEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -246,7 +246,7 @@ public class ModuleDAOImpl implements ModuleDAO {
     }
 //saving image to database
 @Override
-public boolean saveProfileImage(ProfileImageEntity image) {
+public boolean saveProfileImage(FileEntity image) {
     EntityManager em = entityManagerFactory.createEntityManager();
     em.getTransaction().begin();
     em.persist(image);
@@ -255,21 +255,21 @@ public boolean saveProfileImage(ProfileImageEntity image) {
     return true;
 }
 
-    @Override
-    public void updateUserProfileImage(String email, ProfileImageEntity image) {
-        EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
-
-        Query query = em.createQuery(
-                "UPDATE SignupEntity u SET u.profileImage = :image WHERE u.email = :email"
-        );
-        query.setParameter("image", image);
-        query.setParameter("email", email);
-        query.executeUpdate();
-
-        em.getTransaction().commit();
-        em.close();
-    }
+//    @Override
+//    public void updateUserProfileImage(String email, FileEntity image) {
+//        EntityManager em = entityManagerFactory.createEntityManager();
+//        em.getTransaction().begin();
+//
+//        Query query = em.createQuery(
+//                "UPDATE SignupEntity u SET u.profileImage = :image WHERE u.email = :email"
+//        );
+//        query.setParameter("image", image);
+//        query.setParameter("email", email);
+//        query.executeUpdate();
+//
+//        em.getTransaction().commit();
+//        em.close();
+//    }
 }
 
 

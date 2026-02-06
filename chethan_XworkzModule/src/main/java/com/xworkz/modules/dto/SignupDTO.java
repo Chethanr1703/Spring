@@ -1,6 +1,6 @@
 package com.xworkz.modules.dto;
 
-import com.xworkz.modules.entity.file.ProfileImageEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
