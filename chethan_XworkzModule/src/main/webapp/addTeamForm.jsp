@@ -72,10 +72,11 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                 Team Name :
                             </div>
                             <div class="col-8">
-                                <input type="text" name="teamName"
+                                <input type="text" id="teamName" name="teamName"
                                        class="form-control"
-                                       value="${dto.teamName}">
-                                <div class="text-danger small">${teamNameError}</div>
+                                       value="${dto.teamName}"
+                                       oninput="validateTeamName()" onchange="validateTeamName()">
+                                <div class="text-danger small" id="teamNameError"></div>
                             </div>
                         </div>
 
@@ -85,10 +86,12 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                 Team Head :
                             </div>
                             <div class="col-8">
-                                <input type="text" name="teamHeadName"
+                                <input type="text" id="teamHeadName" name="teamHeadName"
                                        class="form-control"
-                                       value="${dto.teamHeadName}">
-                                <div class="text-danger small">${teamHeadNameError}</div>
+                                       value="${dto.teamHeadName}"
+                                       oninput="validateTeamHeadName()" onchange="validateTeamHeadName()">
+                                <div class="text-danger small" id="teamHeadNameError"></div>
+
                             </div>
                         </div>
 
@@ -98,10 +101,12 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                 Phone :
                             </div>
                             <div class="col-8">
-                                <input type="tel" name="phone"
+                                <input type="tel" id="phone" name="phone"
                                        class="form-control"
-                                       value="${dto.phone}">
-                                <div class="text-danger small">${phoneError}</div>
+                                       value="${dto.phone}"
+                                       onchange="validatePhoneNumber()">
+                                <div class="text-danger small" id="phoneError"></div>
+
                             </div>
                         </div>
 
@@ -111,10 +116,12 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                 Email :
                             </div>
                             <div class="col-8">
-                                <input type="email" name="email"
+                                <input type="email" id="email" name="email"
                                        class="form-control"
-                                       value="${dto.email}">
-                                <div class="text-danger small">${emailError}</div>
+                                       value="${dto.email}"
+                                       onchange="validateEmail()">
+                                <div class="text-danger small" id="emailError"></div>
+
                             </div>
                         </div>
 
@@ -124,10 +131,12 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                 Members :
                             </div>
                             <div class="col-8">
-                                <input type="number" name="noOfTeamMember"
+                                <input type="number" id="noOfTeamMember" name="noOfTeamMember"
                                        class="form-control"
-                                       value="${dto.noOfTeamMember}">
-                                <div class="text-danger small">${noOfTeamMemberError}</div>
+                                       value="${dto.noOfTeamMember}"
+                                       oninput="validateMembers()" onchange="validateMembers()">
+                                <div class="text-danger small" id="membersError"></div>
+
                             </div>
                         </div>
 
@@ -147,6 +156,153 @@ pageEncoding="UTF-8" isELIgnored="false" %>
     </div>
 
 </main>
+
+
+<script>
+
+    /* ================= TEAM NAME ================= */
+    function validateTeamName() {
+        const name = document.getElementById("teamName").value.trim();
+        const error = document.getElementById("teamNameError");
+
+        const regex = /^[A-Za-z ]{3,50}$/;
+
+        if (name === "") {
+            error.textContent = "Team Name is required";
+            return false;
+        }
+
+        if (!regex.test(name)) {
+            error.textContent = "3–50 letters only (no numbers or symbols)";
+            return false;
+        }
+
+        error.textContent = "";
+        return true;
+    }
+
+    /* ================= TEAM HEAD ================= */
+    function validateTeamHeadName() {
+        const head = document.getElementById("teamHeadName").value.trim();
+        const error = document.getElementById("teamHeadNameError");
+
+        const regex = /^[A-Za-z ]{3,50}$/;
+
+        if (head === "") {
+            error.textContent = "Team Head Name is required";
+            return false;
+        }
+
+        if (!regex.test(head)) {
+            error.textContent = "3–50 letters only (no numbers or symbols)";
+            return false;
+        }
+
+        error.textContent = "";
+        return true;
+    }
+
+    /* ================= PHONE ================= */
+    function validatePhoneNumber() {
+
+        const phone = document.getElementById("phone").value.trim();
+        const phoneError = document.getElementById("phoneError");
+
+        if (!/^[6-9][0-9]{9}$/.test(phone)) {
+            phoneError.textContent =
+                "Phone must start with 6–9 and contain 10 digits";
+            phoneError.classList.add("text-danger");
+            return false;
+        }
+
+        phoneError.textContent = "";
+
+        const phoneCheck =
+            "http://localhost:8080/chethan_XworkzModule/checkTeamHeadPhNo?phone=";
+
+        fetch(phoneCheck + phone)
+            .then(res => res.text())
+            .then(data => {
+                phoneError.textContent = data;
+                if (data.includes("Valid")) {
+                    phoneError.classList.remove("text-danger");
+                    phoneError.classList.add("text-success");
+                } else {
+                    phoneError.classList.remove("text-success");
+                    phoneError.classList.add("text-danger");
+                }
+            })
+            .catch(() => {
+                phoneError.textContent = "Unable to validate phone";
+                phoneError.classList.add("text-danger");
+            });
+
+        return true;
+    }
+
+    /* ================= EMAIL ================= */
+    function validateEmail() {
+
+        const email = document.getElementById("email").value.trim();
+        const emailError = document.getElementById("emailError");
+
+        if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+            emailError.textContent = "Email must end with @gmail.com";
+            return false;
+        }
+
+        emailError.textContent = "";
+
+        const emailCheck =
+            "http://localhost:8080/chethan_XworkzModule/checkTeamHeadEmail?email=";
+
+        fetch(emailCheck + email)
+            .then(res => res.text())
+            .then(data => {
+                emailError.textContent = data;
+
+                if (data.includes("Valid")) {
+                    emailError.classList.remove("text-danger");
+                    emailError.classList.add("text-success");
+                } else {
+                    emailError.classList.remove("text-success");
+                    emailError.classList.add("text-danger");
+                }
+            })
+            .catch(() => {
+                emailError.textContent = "Unable to validate Email";
+                emailError.classList.add("text-danger");
+            });
+
+        return true;
+    }
+
+    /* ================= MEMBERS ================= */
+    function validateMembers() {
+
+        const members = document.getElementById("noOfTeamMember").value;
+        const error = document.getElementById("membersError");
+
+        if (members < 1 || members > 50) {
+            error.textContent = "Members must be between 1 and 50";
+            return false;
+        }
+
+        error.textContent = "";
+        return true;
+    }
+
+    /* ================= FORM ================= */
+    function validateForm() {
+        return validateTeamName() &&
+               validateTeamHeadName() &&
+               validatePhoneNumber() &&
+               validateEmail() &&
+               validateMembers();
+    }
+
+</script>
+
 
 <!-- FOOTER -->
 <footer class="bg-primary text-white text-center py-3 mt-auto">

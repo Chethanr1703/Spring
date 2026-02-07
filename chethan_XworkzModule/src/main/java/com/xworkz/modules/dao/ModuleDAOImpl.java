@@ -255,21 +255,7 @@ public boolean saveProfileImage(FileEntity image) {
     return true;
 }
 
-//    @Override
-//    public void updateUserProfileImage(String email, FileEntity image) {
-//        EntityManager em = entityManagerFactory.createEntityManager();
-//        em.getTransaction().begin();
-//
-//        Query query = em.createQuery(
-//                "UPDATE SignupEntity u SET u.profileImage = :image WHERE u.email = :email"
-//        );
-//        query.setParameter("image", image);
-//        query.setParameter("email", email);
-//        query.executeUpdate();
-//
-//        em.getTransaction().commit();
-//        em.close();
-//    }
+
 }
 
 

@@ -71,8 +71,9 @@ pageEncoding="UTF-8" isELIgnored="false" %>
             <h4 class="fw-bold text-primary">Sign In</h4>
         </div>
 
-        <form action="login" method="post">
-            <div>
+        <form action="login" method="post" onsubmit="return validateLoginForm()">
+
+        <div>
 
                 <c:if test="${not empty errorMsg}">
                     <p class="text-center fw-bold text-danger mt-4">
@@ -81,12 +82,18 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 </c:if>
             </div>
 
-            <input type="email"
-                   name="email"
-                   class="form-control"
-                   placeholder="Enter your email"
-                   value="${email}"
-                   required>
+            <div class="mb-3">
+                <input type="email"
+                       id="email"
+                       name="email"
+                       class="form-control"
+                       placeholder="Enter your email"
+                       value="${email}"
+                       oninput="validateEmail()" onchange="validateEmail()">
+
+                <div class="text-danger small" id="emailError"></div>
+            </div>
+
             <br>
             <div class="mb-3">
                 <input type="password" name="password"
@@ -136,7 +143,52 @@ pageEncoding="UTF-8" isELIgnored="false" %>
         </form>
     </div>
 </main>
+<script>
 
+
+    function validateEmail() {
+        console.log("start");
+
+        const email = document.getElementById("email").value.trim();
+        const emailError = document.getElementById("emailError");
+
+
+        if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+            emailError.textContent = "Email must end with @gmail.com";
+            return false;
+        }
+
+
+        emailError.textContent = "";
+
+        const emailCheck =
+            "http://localhost:8080/chethan_XworkzModule/checkEmailLogin?email=";
+
+
+        fetch(emailCheck + email)
+            .then(res => res.text())
+            .then(data => {
+                console.log(data); // backend message
+                emailError.textContent = data;
+
+                // Optional: color based on response
+                if (data.includes("Valid")) {
+                    emailError.classList.remove("text-danger");
+                    emailError.classList.add("text-success");
+                } else {
+                    emailError.classList.remove("text-success");
+                    emailError.classList.add("text-danger");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                emailError.textContent = "Unable to validate Email";
+                emailError.classList.add("text-danger");
+            });
+
+        return true;
+    }
+</script>
 
 <footer class="bg-primary text-white text-center py-3 mt-auto">
     <p class="mb-0 fw-semibold">© 2026 X-Workz Training Institute</p>

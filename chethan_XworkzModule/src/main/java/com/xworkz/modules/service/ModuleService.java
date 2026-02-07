@@ -34,5 +34,4 @@ public interface ModuleService {
 
     List<AddTeamMemberDTO> getTeamMemberByTeamName(String teamName);
 
-    SignupDTO checkEmail(String email);
 }

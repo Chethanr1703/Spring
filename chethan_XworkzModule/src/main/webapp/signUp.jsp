@@ -256,6 +256,50 @@ function validatePhoneNumber() {
 
 
 
+function validateEmail() {
+    console.log("start");
+
+    const email = document.getElementById("email").value.trim();
+    const emailError = document.getElementById("emailError");
+
+
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+        emailError.textContent = "Email must end with @gmail.com";
+        return false;
+    }
+
+
+    emailError.textContent = "";
+
+    const emailCheck =
+        "http://localhost:8080/chethan_XworkzModule/checkEmail?email=";
+
+
+    fetch(emailCheck + email)
+        .then(res => res.text())
+        .then(data => {
+            console.log(data); // backend message
+            emailError.textContent = data;
+
+            // Optional: color based on response
+            if (data.includes("Valid")) {
+                emailError.classList.remove("text-danger");
+                emailError.classList.add("text-success");
+            } else {
+                emailError.classList.remove("text-success");
+                emailError.classList.add("text-danger");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            emailError.textContent = "Unable to validate Email";
+            emailError.classList.add("text-danger");
+        });
+
+    return true;
+}
+
+
 function allowOnlyLetters(event) {
     const char = event.key;
     return /^[A-Za-z ]$/.test(char);
@@ -280,20 +324,6 @@ function validateName() {
     }
 
     nameError.textContent = "";
-    return true;
-}
-
-/* ================= EMAIL ================= */
-function validateEmail() {
-    const email = document.getElementById("email").value.trim();
-    const emailError = document.getElementById("emailError");
-
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
-        emailError.textContent = "Email must end with @gmail.com";
-        return false;
-    }
-
-    emailError.textContent = "";
     return true;
 }
 

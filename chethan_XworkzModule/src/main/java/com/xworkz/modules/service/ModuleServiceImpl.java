@@ -143,21 +143,21 @@ public class ModuleServiceImpl implements ModuleService {
                     String uploadDir = "D:/filefolder";   // folder only
                     String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
 
-                    // 1️⃣ Create directory path
+                    // 1️ Create directory path
                     Path directoryPath = Paths.get(uploadDir);
 
-                    // 2️⃣ Create directory if not exists
+                    // 2️ Create directory if not exists
                     if (!Files.exists(directoryPath)) {
                         Files.createDirectories(directoryPath);
                     }
 
-                    // 3️⃣ Create full file path
+                    // 3️ Create full file path
                     Path filePath = directoryPath.resolve(fileName);
 
-                    // 4️⃣ Write file
+                    // 4️ Write file
                     Files.write(filePath, image.getBytes());
 
-                    // 5️⃣ Save file metadata
+                    // 5 Save file metadata
                     FileEntity fileEntity = new FileEntity();
                     fileEntity.setOriginalFileName(image.getOriginalFilename());
                     fileEntity.setStoredFilePath(filePath.toString());
@@ -284,6 +284,8 @@ public class ModuleServiceImpl implements ModuleService {
         return false;
     }
 
+
+//------------------Team Details
     @Override
     public boolean saveTeam(AddTeamDTO addTeamDTO) {
         AddTeamEntity addTeamEntity = new AddTeamEntity();
@@ -365,11 +367,5 @@ public class ModuleServiceImpl implements ModuleService {
         return null;
     }
 
-    @Override
-    public SignupDTO checkEmail(String email) {
-        if(email!=null){
 
-        }
-        return null;
-    }
 }
