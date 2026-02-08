@@ -3,7 +3,7 @@
 pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<html lang="en">
+<html lang="en" xmlns:c="http://www.w3.org/1999/XSL/Transform">
 <head>
     <meta charset="UTF-8">
     <title>View Teams | X-Workz</title>
@@ -77,42 +77,71 @@ pageEncoding="UTF-8" isELIgnored="false" %>
             <c:forEach items="${members}" var="m">
                 <div class="col-md-6 col-lg-4">
 
-                    <div class="card team-card shadow-sm h-100">
+                    <div class="card team-card shadow border-0 h-100">
 
-                        <!-- HEADER -->
-                        <div class="team-header">
-                            ${m.teamName}
+                        <!-- LOGO SECTION -->
+                        <div class="text-center pt-4 pb-3 bg-white rounded-top">
+
+                            <c:choose>
+                                <c:when test="${m.id ne 0}">
+                                    <img src="<c:url value='/getTeamImage?id=${m.id}'/>"
+                                         class="rounded-circle shadow"
+                                         width="110" height="110"
+                                         style="object-fit: cover;">
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="d-flex align-items-center justify-content-center
+        rounded-circle bg-primary text-white fw-bold"
+                                         style="width:110px;height:110px;margin:auto;font-size:30px;">
+                                        HI
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+
+                        </div>
+
+                        <!-- TEAM NAME -->
+                        <div class="text-center pb-2">
+                            <h5 class="fw-bold text-primary">
+                                ${m.teamName}
+                            </h5>
                         </div>
 
                         <!-- BODY -->
-                        <div class="card-body">
+                        <div class="card-body text-center">
 
-                            <p class="d-flex mb-2">
-                                <span class="fw-semibold me-1">👤 Team Head :</span>
-                                <span>${m.teamHeadName}</span>
+                            <p class="mb-2">
+                                <span class="fw-semibold">Team Head :</span>
+                                ${m.teamHeadName}
                             </p>
 
-                            <p class="d-flex mb-2">
-                                <span class="fw-semibold me-1">📧 Email :</span>
-                                <span>${m.email}</span>
+                            <p class="mb-2">
+                                <span class="fw-semibold">Email :</span>
+                                ${m.email}
                             </p>
 
-                            <p class="d-flex mb-2">
-                                <span class="fw-semibold me-1">📞 Phone :</span>
-                                <span>${m.phone}</span>
+                            <p class="mb-3">
+                                <span class="fw-semibold">Phone :</span>
+                                ${m.phone}
                             </p>
 
-                            <div class="mt-3 text-center">
-                                <span class="badge bg-success member-badge">
-                                    👥 ${m.noOfTeamMember} Members
-                                </span>
+                            <div class="d-grid">
+                                <form action="getTeamMembers" method="get">
+                                    <input type="hidden" name="teamName" value="${m.teamName}">
+                                    <button type="submit"
+                                            class="btn btn-outline-primary fw-semibold">
+                                        View Team Members
+                                    </button>
+                                </form>
                             </div>
 
                         </div>
+
                     </div>
 
                 </div>
             </c:forEach>
+
 
         </div>
     </c:if>

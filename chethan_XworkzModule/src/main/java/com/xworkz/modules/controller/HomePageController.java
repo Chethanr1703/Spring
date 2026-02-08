@@ -3,7 +3,9 @@ package com.xworkz.modules.controller;
 import com.xworkz.modules.dto.AddTeamDTO;
 import com.xworkz.modules.dto.AddTeamMemberDTO;
 import com.xworkz.modules.entity.AddTeamEntity;
+import com.xworkz.modules.entity.SignupEntity;
 import com.xworkz.modules.service.ModuleService;
+import com.xworkz.modules.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -23,6 +27,9 @@ public class HomePageController {
 
     @Autowired
     ModuleService moduleService;
+
+    @Autowired
+    FileService fileService;
 
     @GetMapping("addTeam")
     public String addTeam() {
@@ -56,12 +63,22 @@ public class HomePageController {
 
 
     @GetMapping("viewTeams")
-    public  String viewTeam(Model model){
+    public  String viewTeam(Model model, HttpSession session){
 
         List<AddTeamDTO> members = moduleService.getTeam();
         System.out.println(members);
         if(members!=null){
             model.addAttribute("members", members);
+            List<AddTeamEntity> userEntities = fileService.getUserEntity();
+
+            for (AddTeamEntity entity : userEntities) {
+                if (entity.getImage() != null) {
+                    session.setAttribute(
+                            "fileId",
+                            entity.getImage().getId()
+                    );
+                }
+            }
             return "viewTeams";
         }else {
             model.addAttribute("noTeams","No Teams Found");
@@ -71,39 +88,34 @@ public class HomePageController {
 
 
     @PostMapping("addTeam")
-    public ModelAndView addTeams(@Valid AddTeamDTO addTeamDTO, BindingResult bindingResult, ModelAndView mv){
+    public ModelAndView addTeams(@Valid AddTeamDTO addTeamDTO, BindingResult bindingResult, ModelAndView mv) throws IOException {
         mv.addObject("dto", addTeamDTO);
-
-        if (bindingResult.hasErrors()) {
-
-            if (bindingResult.hasFieldErrors("teamName")) {
-                mv.addObject("teamNameError",
-                        bindingResult.getFieldError("teamName").getDefaultMessage());
-            }
-
-            if (bindingResult.hasFieldErrors("teamHeadName")) {
-                mv.addObject("teamHeadNameError",
-                        bindingResult.getFieldError("teamHeadName").getDefaultMessage());
-            }
-
-            if (bindingResult.hasFieldErrors("phone")) {
-                mv.addObject("phoneError",
-                        bindingResult.getFieldError("phone").getDefaultMessage());
-            }
-
-            if (bindingResult.hasFieldErrors("email")) {
-                mv.addObject("emailError",
-                        bindingResult.getFieldError("email").getDefaultMessage());
-            }
-
-            if (bindingResult.hasFieldErrors("noOfTeamMember")) {
-                mv.addObject("noOfTeamMemberError",
-                        bindingResult.getFieldError("noOfTeamMember").getDefaultMessage());
-            }
-
-            mv.setViewName("addTeamForm");
-            return mv;
-        }
+//
+//        if (bindingResult.hasErrors()) {
+//
+//            if (bindingResult.hasFieldErrors("teamName")) {
+//                mv.addObject("teamNameError",
+//                        bindingResult.getFieldError("teamName").getDefaultMessage());
+//            }
+//
+//            if (bindingResult.hasFieldErrors("teamHeadName")) {
+//                mv.addObject("teamHeadNameError",
+//                        bindingResult.getFieldError("teamHeadName").getDefaultMessage());
+//            }
+//
+//            if (bindingResult.hasFieldErrors("phone")) {
+//                mv.addObject("phoneError",
+//                        bindingResult.getFieldError("phone").getDefaultMessage());
+//            }
+//
+//            if (bindingResult.hasFieldErrors("email")) {
+//                mv.addObject("emailError",
+//                        bindingResult.getFieldError("email").getDefaultMessage());
+//            }
+//
+//
+//            return mv;
+//        }
 
         boolean saveTeam =moduleService.saveTeam(addTeamDTO);
         if(saveTeam) {

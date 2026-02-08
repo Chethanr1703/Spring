@@ -26,7 +26,7 @@ public interface ModuleService {
 
     boolean validateNewPassword(String email,String newPassword, String confirmPassword);
 
-    boolean saveTeam( AddTeamDTO addTeamDTO);
+    boolean saveTeam( AddTeamDTO addTeamDTO) throws IOException;
 
     boolean addTeamMember(AddTeamMemberDTO addTeamMemberDTO);
 

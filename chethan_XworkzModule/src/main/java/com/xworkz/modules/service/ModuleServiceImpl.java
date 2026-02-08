@@ -287,18 +287,52 @@ public class ModuleServiceImpl implements ModuleService {
 
 //------------------Team Details
     @Override
-    public boolean saveTeam(AddTeamDTO addTeamDTO) {
+    public boolean saveTeam(AddTeamDTO addTeamDTO) throws IOException {
         AddTeamEntity addTeamEntity = new AddTeamEntity();
         BeanUtils.copyProperties(addTeamDTO, addTeamEntity);
 
         boolean checkEmail = moduleDAO.checkEmail(addTeamEntity.getEmail());
         if (!checkEmail) {
-            boolean isAdded = moduleDAO.saveTeam(addTeamEntity);
+            MultipartFile image = addTeamDTO.getImage();
 
-            return isAdded;
-        } else {
-            return false;
+            if (image != null && !image.isEmpty()) {
+
+                String uploadDir = "D:/filefolder";   // folder only
+                String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+
+                // 1️ Create directory path
+                Path directoryPath = Paths.get(uploadDir);
+
+                // 2️ Create directory if not exists
+                if (!Files.exists(directoryPath)) {
+                    Files.createDirectories(directoryPath);
+                }
+
+                // 3️ Create full file path
+                Path filePath = directoryPath.resolve(fileName);
+
+                // 4️ Write file
+                Files.write(filePath, image.getBytes());
+
+                // 5 Save file metadata
+                FileEntity fileEntity = new FileEntity();
+                fileEntity.setOriginalFileName(image.getOriginalFilename());
+                fileEntity.setStoredFilePath(filePath.toString());
+                fileEntity.setFileSize(image.getSize());
+                fileEntity.setContentType(image.getContentType());
+
+                int imageId = fileDAO.saveFile(fileEntity);
+                fileEntity.setId(imageId);
+
+                addTeamEntity.setImage(fileEntity);
+                boolean isAdded = moduleDAO.saveTeam(addTeamEntity);
+
+                return isAdded;
+            } else {
+                return false;
+            }
         }
+        return checkEmail;
     }
 
     @Override
@@ -325,19 +359,23 @@ public class ModuleServiceImpl implements ModuleService {
         List<AddTeamEntity> getTeams = moduleDAO.getTeamByTeamHeadEmail();
         List<AddTeamDTO> teamDTOS = new ArrayList<>();
 
+        for (AddTeamEntity entity : getTeams) {
 
-        for (AddTeamEntity addTeamEntity : getTeams) {
-            AddTeamDTO addTeamDTO = new AddTeamDTO();
+            AddTeamDTO dto = new AddTeamDTO();
+            BeanUtils.copyProperties(entity, dto);
 
-            BeanUtils.copyProperties(addTeamEntity, addTeamDTO);
+            // 🔥 SET IMAGE ID MANUALLY
+            if (entity.getImage() != null) {
+                dto.setId(entity.getImage().getId());
+            }
 
             int noOfTeamMember = moduleDAO.countTeamMembers(
-                    addTeamEntity.getTeamName(),
-                    addTeamEntity.getEmail()
+                    entity.getTeamName(),
+                    entity.getEmail()
             );
 
-            addTeamDTO.setNoOfTeamMember(noOfTeamMember);
-            teamDTOS.add(addTeamDTO);
+            dto.setNoOfTeamMember(noOfTeamMember);
+            teamDTOS.add(dto);
         }
 
         return teamDTOS;
