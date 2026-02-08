@@ -3,6 +3,7 @@ package com.xworkz.modules.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.validation.constraints.*;
@@ -31,4 +32,6 @@ public class AddTeamDTO {
     private String phone;
     @Min(value = 10,message = "No of team Member atleast 10 member")
     private Integer noOfTeamMember;
+
+    private MultipartFile image;
 }

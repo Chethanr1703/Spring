@@ -64,7 +64,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                     </c:if>
 
                     <!-- FORM -->
-                    <form action="addTeam" method="post">
+                    <form action="addTeam" method="post" enctype="multipart/form-data">
 
                         <!-- TEAM NAME -->
                         <div class="row align-items-center mb-3">
@@ -124,19 +124,20 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 
                             </div>
                         </div>
-
-                        <!-- NO OF MEMBERS -->
-                        <div class="row align-items-center mb-4">
+                        <div class="row align-items-center mb-3">
                             <div class="col-4 fw-semibold text-end">
-                                Members :
+
+                                Profile Photo
                             </div>
                             <div class="col-8">
-                                <input type="number" id="noOfTeamMember" name="noOfTeamMember"
+                                <input type="file"
                                        class="form-control"
-                                       value="${dto.noOfTeamMember}"
-                                       oninput="validateMembers()" onchange="validateMembers()">
-                                <div class="text-danger small" id="membersError"></div>
+                                       name="image"
+                                       id="profileImage"
+                                       accept="image/png,image/jpeg"
+                                       onchange="validateImage()">
 
+                                <div class="text-danger small" id="imageError"></div>
                             </div>
                         </div>
 

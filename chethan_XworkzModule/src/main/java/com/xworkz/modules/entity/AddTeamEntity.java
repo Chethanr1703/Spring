@@ -1,6 +1,7 @@
 package com.xworkz.modules.entity;
 
 
+import com.xworkz.modules.entity.file.FileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,9 @@ public class AddTeamEntity {
     private String email;
     private String phone;
     private Integer noOfTeamMember;
+
+
+    @JoinColumn(name = "file_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    private FileEntity image;
 }

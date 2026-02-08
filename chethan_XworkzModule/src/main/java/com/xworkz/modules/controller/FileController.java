@@ -24,6 +24,25 @@ public class FileController {
             @RequestParam int id,
             HttpServletResponse response) throws IOException {
         FileEntity file = fileService.getFileById(id);
+        System.out.println(file+"file122");
+
+        if (file == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        response.setContentType(file.getContentType());
+
+        Path imagePath = Paths.get(file.getStoredFilePath());
+        Files.copy(imagePath, response.getOutputStream());
+    }
+
+
+    @GetMapping("/getTeamImage")
+    public void getTeamImage(
+            @RequestParam int id,
+            HttpServletResponse response) throws IOException {
+        FileEntity file = fileService.getFileById(id);
+        System.out.println(file+"file");
 
         if (file == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

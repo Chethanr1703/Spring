@@ -1,5 +1,6 @@
 package com.xworkz.modules.dao.fileDAO;
 
+import com.xworkz.modules.entity.AddTeamEntity;
 import com.xworkz.modules.entity.SignupEntity;
 import com.xworkz.modules.entity.file.FileEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.List;
 
 @Controller
 public class FileDAOImpl implements FileDAO{
@@ -58,6 +60,24 @@ public class FileDAOImpl implements FileDAO{
     }
 
 
+    @Override
+    public List<AddTeamEntity> findEntity() {
+
+        EntityManager em = entityManagerFactory.createEntityManager();
+
+        try {
+            Query query = em.createQuery(
+                    "FROM AddTeamEntity r "
+            );
+            return (List<AddTeamEntity>) query.getResultList();
+
+        } catch (NoResultException e) {
+            return null;
+
+        } finally {
+            em.close();
+        }
+    }
 
 
 }
