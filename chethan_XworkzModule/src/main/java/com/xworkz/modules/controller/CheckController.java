@@ -3,7 +3,6 @@ package com.xworkz.modules.controller;
 import com.xworkz.modules.dto.AddTeamDTO;
 import com.xworkz.modules.dto.AddTeamMemberDTO;
 import com.xworkz.modules.dto.SignupDTO;
-import com.xworkz.modules.service.ModuleService;
 import com.xworkz.modules.service.check.CheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +15,6 @@ public class CheckController {
 
     @Autowired
     CheckService checkService;
-    @Autowired
-    ModuleService moduleService;
-
-
 
     @GetMapping("checkPhoneNumber")
     @ResponseBody
