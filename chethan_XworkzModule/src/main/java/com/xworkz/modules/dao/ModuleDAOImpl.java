@@ -256,6 +256,29 @@ public boolean saveProfileImage(FileEntity image) {
 }
 
 
+
+    @Override
+    public AddTeamEntity getTeamByTeamName(String teamName) {
+
+        EntityManager em = entityManagerFactory.createEntityManager();
+
+        try {
+            Query query = em.createQuery(
+                    "FROM AddTeamEntity t WHERE t.teamName = :teamName"
+            );
+
+            query.setParameter("teamName", teamName);
+
+            return (AddTeamEntity) query.getSingleResult();
+
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+
 }
 
 

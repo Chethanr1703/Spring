@@ -105,46 +105,48 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 
 
 
-
-<div class="offcanvas offcanvas-start text-bg-primary"
+<div class="offcanvas offcanvas-start shadow"
      tabindex="-1"
-     id="dashboardOffcanvas">
+     id="dashboardOffcanvas"
+     style="width: 270px;">
 
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title fw-bold">Dashboard</h5>
+    <div class="offcanvas-header bg-primary text-white">
+        <h5 class="offcanvas-title fw-bold">
+            Dashboard
+        </h5>
         <button type="button"
                 class="btn-close btn-close-white"
                 data-bs-dismiss="offcanvas"></button>
     </div>
 
-    <div class="offcanvas-body p-0">
-        <div class="nav nav-pills flex-column gap-2 p-3">
+    <div class="offcanvas-body p-0 bg-light">
+
+        <div class="d-flex flex-column p-3 gap-3">
 
             <a href="addTeam"
-               class="nav-link text-white fw-semibold">
+               class="btn btn-outline-primary rounded-pill fw-semibold py-2">
                 Add Team
             </a>
 
             <a href="addTeamMember"
-               class="nav-link text-white fw-semibold">
+               class="btn btn-outline-primary rounded-pill fw-semibold py-2">
                 Add Team Member
             </a>
 
-            <a href="viewTeamMembers"
-               class="nav-link text-white fw-semibold">
-                View Team Members
-            </a>
-
             <a href="viewTeams"
-               class="nav-link text-white fw-semibold">
+               class="btn btn-outline-primary rounded-pill fw-semibold py-2">
                 View Teams
             </a>
 
+            <a href="sendTeamMailPage"
+               class="btn btn-outline-danger rounded-pill fw-semibold py-2">
+                Send Team Email
+            </a>
+
         </div>
+
     </div>
 </div>
-
-
 
 
 

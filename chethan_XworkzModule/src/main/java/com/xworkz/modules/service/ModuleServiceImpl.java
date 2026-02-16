@@ -53,7 +53,8 @@ public class ModuleServiceImpl implements ModuleService {
             byte[] encrypted = cipher.doFinal(plainText.getBytes());
             return Base64.getEncoder().encodeToString(encrypted);
         } catch (Exception e) {
-            throw new RuntimeException("Error encrypting password", e);
+//            throw new RuntimeException("Error encrypting password", e);
+            return "";
         }
     }
 
@@ -65,7 +66,8 @@ public class ModuleServiceImpl implements ModuleService {
             byte[] original = cipher.doFinal(decoded);
             return new String(original);
         } catch (Exception e) {
-            throw new RuntimeException("Error decrypting password", e);
+//            throw new RuntimeException("Error decrypting password", e);
+            return "";
         }
     }
 
@@ -292,7 +294,7 @@ public class ModuleServiceImpl implements ModuleService {
         BeanUtils.copyProperties(addTeamDTO, addTeamEntity);
 
         boolean checkEmail = moduleDAO.checkEmail(addTeamEntity.getEmail());
-        if (!checkEmail) {
+        if (checkEmail) {
             MultipartFile image = addTeamDTO.getImage();
 
             if (image != null && !image.isEmpty()) {

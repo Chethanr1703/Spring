@@ -21,7 +21,7 @@ public class OTP {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("chethanbabu1708@gmail.com");  // two step verified email
-        message.setTo("chethanbabu1708@gmail.com");
+        message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
         emailSender.send(message);

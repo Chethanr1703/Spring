@@ -42,4 +42,7 @@ public interface ModuleDAO {
     List<AddTeamMemberEntity> getTeamMemberByTeamName(String teamName);
 
     boolean saveProfileImage(FileEntity imageEntity);
+
+
+    AddTeamEntity getTeamByTeamName ( String teamName);
 }

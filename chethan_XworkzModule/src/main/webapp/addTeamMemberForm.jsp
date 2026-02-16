@@ -36,6 +36,51 @@ pageEncoding="UTF-8" isELIgnored="false" %>
     </a>
 </nav>
 
+
+<div class="offcanvas offcanvas-start shadow"
+     tabindex="-1"
+     id="dashboardOffcanvas"
+     style="width: 270px;">
+
+    <div class="offcanvas-header bg-primary text-white">
+        <h5 class="offcanvas-title fw-bold">
+            Dashboard
+        </h5>
+        <button type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body p-0 bg-light">
+
+        <div class="d-flex flex-column p-3 gap-3">
+
+            <a href="addTeam"
+               class="btn btn-outline-primary rounded-pill fw-semibold py-2">
+                Add Team
+            </a>
+
+            <a href="addTeamMember"
+               class="btn btn-outline-primary rounded-pill fw-semibold py-2">
+                Add Team Member
+            </a>
+
+            <a href="viewTeams"
+               class="btn btn-outline-primary rounded-pill fw-semibold py-2">
+                View Teams
+            </a>
+
+            <a href="sendTeamMailPage"
+               class="btn btn-outline-danger rounded-pill fw-semibold py-2">
+                Send Team Email
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+
 <!-- MAIN -->
 <main class="d-flex align-items-center justify-content-center"
       style="padding-top: 90px;">
