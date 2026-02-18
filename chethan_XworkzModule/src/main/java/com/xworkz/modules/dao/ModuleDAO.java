@@ -44,5 +44,5 @@ public interface ModuleDAO {
     boolean saveProfileImage(FileEntity imageEntity);
 
 
-    AddTeamEntity getTeamByTeamName ( String teamName);
+    AddTeamEntity getTeamByTeamName(String teamName);
 }

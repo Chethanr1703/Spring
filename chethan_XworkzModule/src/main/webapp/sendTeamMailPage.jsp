@@ -68,37 +68,39 @@ pageEncoding="UTF-8" isELIgnored="false" %>
          style="min-height: 70vh;">
 
         <div class="card shadow-lg border-0"
-             style="width: 500px; border-radius: 18px;">
+             style="width: 550px; border-radius: 18px;">
 
-                <div class="card-body p-4">
+            <div class="card-body p-4">
 
-                    <h4 class="fw-bold text-center text-danger mb-4">
-                        Send Team Email
-                    </h4>
+                <h4 class="fw-bold text-center text-danger mb-4">
+                    Create Event & Send Attendance Mail
+                </h4>
 
-                    <!-- 🔥 ADD MESSAGE HERE -->
+                <!-- SUCCESS MESSAGE -->
+                <c:if test="${not empty msg}">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        ${msg}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                </c:if>
 
-                    <c:if test="${not empty msg}">
-                        <div class="alert alert-success alert-dismissible fade show">
-                            ${msg}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    </c:if>
+                <!-- ERROR MESSAGE -->
+                <c:if test="${not empty error}">
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        ${error}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                </c:if>
 
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger alert-dismissible fade show">
-                            ${error}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    </c:if>
+                <form action="createEvent" method="post">
 
-                <form action="sendTeamMail" method="post">
-
+                    <!-- Team Selection -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">
                             Select Team
                         </label>
-                        <select name="teamName" class="form-select">
+                        <select name="teamName" class="form-select" required>
+                            <option value="">-- Select Team --</option>
                             <c:forEach items="${teams}" var="team">
                                 <option value="${team.teamName}">
                                     ${team.teamName}
@@ -107,18 +109,33 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                         </select>
                     </div>
 
+                    <!-- Event Title -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Event Title
+                        </label>
+                        <input type="text"
+                               name="title"
+                               class="form-control"
+                               placeholder="Enter event title"
+                               required>
+                    </div>
+
+                    <!-- Event Description -->
                     <div class="mb-4">
                         <label class="form-label fw-semibold">
-                            Message
+                            Event Description
                         </label>
                         <textarea name="message"
                                   class="form-control"
                                   rows="5"
-                                  placeholder="Enter your message here..."></textarea>
+                                  placeholder="Enter event details..."
+                                  required></textarea>
                     </div>
 
+                    <!-- Submit Button -->
                     <button class="btn btn-danger w-100 rounded-pill fw-semibold py-2">
-                        Send Email
+                        Send Attendance Email
                     </button>
 
                 </form>

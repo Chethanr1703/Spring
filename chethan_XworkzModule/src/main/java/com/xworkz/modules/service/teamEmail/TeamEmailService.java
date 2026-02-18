@@ -7,5 +7,9 @@ import java.util.List;
 public interface TeamEmailService {
 
 
-    boolean sendMailToTeam(String teamName, String message);
+    boolean createEventAndSendMail(String teamName, String title, String message);
+
+    boolean saveResponse(int eventId, String email, String response);
+
+
 }
