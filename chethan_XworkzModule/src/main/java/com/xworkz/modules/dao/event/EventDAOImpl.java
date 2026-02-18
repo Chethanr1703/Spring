@@ -77,6 +77,7 @@ public class EventDAOImpl implements EventDAO{
 
             return(TeamEventResponseEntity) query.getSingleResult();
 
+
         } catch (NoResultException e) {
             return null;
         } finally {
